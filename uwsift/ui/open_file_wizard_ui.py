@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'open_file_wizard.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.12.3
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_openFileWizard(object):
     def setupUi(self, openFileWizard):
@@ -119,5 +121,4 @@ class Ui_openFileWizard(object):
         self.productSelectionPage.setSubTitle(_translate("openFileWizard", "Select products to add"))
         self.selectAllButton.setText(_translate("openFileWizard", "Select/Deselect All"))
         self.selectIDTable.setSortingEnabled(False)
-
 from uwsift.ui.custom_widgets import AnyWizardPage

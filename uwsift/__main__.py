@@ -36,7 +36,7 @@ import uwsift.ui.open_cache_dialog_ui as open_cache_dialog_ui
 from uwsift import __version__
 from uwsift.common import Info, Tool, CompositeType
 from uwsift.control.doc_ws_as_timeline_scene import SiftDocumentAsFramesInTracks
-from uwsift.control.layer_tree import LayerStackTreeViewModel
+from uwsift.control.layer_tree import LayerStackListModel
 from uwsift.control.rgb_behaviors import UserModifiesRGBLayers
 from uwsift.model.document import Document
 from uwsift.model.layer import DocRGBLayer
@@ -236,13 +236,13 @@ class UserControlsAnimation(QtCore.QObject):
     ui = None
     document: Document = None
     scene_manager: SceneGraphManager = None
-    layer_list_model: LayerStackTreeViewModel = None
+    layer_list_model: LayerStackListModel = None
     _animation_speed_popup = None  # window we'll show temporarily with animation speed popup
 
     def __init__(self, ui,
                  scene_manager: SceneGraphManager,
                  document: Document,
-                 layer_list_model: LayerStackTreeViewModel
+                 layer_list_model: LayerStackListModel
                  ):
         """
         Args:
@@ -836,8 +836,8 @@ class Main(QtGui.QMainWindow):
     def _init_layer_panes(self):
         # convey action between document and layer list view
         self.layer_info_pane = SingleLayerInfoPane(self.document, parent=self.ui.layerDetailsContents)
-        self.layer_list_model = LayerStackTreeViewModel([self.ui.layerListView], self.document,
-                                                        parent=self.ui.layersPaneWidget)
+        self.layer_list_model = LayerStackListModel([self.ui.layerListView], self.document,
+                                                    parent=self.ui.layersPaneWidget)
         self.layer_list_model.uuidSelectionChanged.connect(self.layer_info_pane.update_display)
 
     def _init_map_widget(self):

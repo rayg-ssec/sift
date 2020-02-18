@@ -36,10 +36,10 @@ import logging
 import pickle as pkl
 import sys
 
-from PyQt5.QtCore import (QAbstractItemModel, Qt, QSize, QModelIndex, QPoint, QMimeData,
+from PyQt5.QtCore import (QAbstractListModel, Qt, QSize, QModelIndex, QPoint, QMimeData,
                           pyqtSignal, QRect, QItemSelection, QItemSelectionModel)
 from PyQt5.QtGui import QColor, QFont, QPen
-from PyQt5.QtWidgets import (QTreeView, QStyledItemDelegate, QAbstractItemView,
+from PyQt5.QtWidgets import (QListView, QStyledItemDelegate, QAbstractItemView,
                              QMenu, QStyle, QStyleOptionViewItem, QActionGroup, QAction)
 
 from uwsift.common import Info, Kind
@@ -222,7 +222,7 @@ class LayerWidgetDelegate(QStyledItemDelegate):
     #     return True
 
 
-class LayerStackTreeViewModel(QAbstractItemModel):
+class LayerStackListModel(QAbstractListModel):
     """Behavior connecting list widget to layer stack (both ways)
 
     Each table view represents a different configured document layer stack "set" - user can select from at least four.
@@ -253,7 +253,7 @@ class LayerStackTreeViewModel(QAbstractItemModel):
         :param doc: document to communicate with
         :return:
         """
-        super(LayerStackTreeViewModel, self).__init__(parent)
+        super(LayerStackListModel, self).__init__(parent)
 
         self.widgets = []
         self.doc = doc
@@ -282,10 +282,10 @@ class LayerStackTreeViewModel(QAbstractItemModel):
             self._init_widget(widget)
 
     # TODO, this wrapper is probably not needed, possibly remove later
-    def add_widget(self, listbox: QTreeView):
+    def add_widget(self, listbox: QListView):
         self._init_widget(listbox)
 
-    def _init_widget(self, listbox: QTreeView):
+    def _init_widget(self, listbox: QListView):
         listbox.setModel(self)
         listbox.setItemDelegate(self.item_delegate)
         listbox.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -360,7 +360,7 @@ class LayerStackTreeViewModel(QAbstractItemModel):
         except IndexError:
             pass
 
-    def current_selected_uuids(self, lbox: QTreeView = None):
+    def current_selected_uuids(self, lbox: QListView = None):
         lbox = self.current_set_listbox if lbox is None else lbox
         if lbox is None:
             LOG.error('not sure which list box is active! oh pooh.')
@@ -368,7 +368,7 @@ class LayerStackTreeViewModel(QAbstractItemModel):
         for q in lbox.selectedIndexes():
             yield self.doc.uuid_for_current_layer(q.row())
 
-    def select(self, uuids, lbox: QTreeView = None, scroll_to_show_single=True):
+    def select(self, uuids, lbox: QListView = None, scroll_to_show_single=True):
         lbox = self.current_set_listbox if lbox is None else lbox
         lbox.clearSelection()
         if not uuids:
@@ -414,7 +414,7 @@ class LayerStackTreeViewModel(QAbstractItemModel):
             self._last_equalizer_values.update(doc_values)
         self.refresh()
 
-    def change_layer_colormap_menu(self, menu, lbox: QTreeView, selected_uuids: list, *args):
+    def change_layer_colormap_menu(self, menu, lbox: QListView, selected_uuids: list, *args):
         def _show_change_colormap_dialog(action):
             d = ChangeColormapDialog(self.doc, selected_uuids[0], parent=lbox)
             d.show()
@@ -424,7 +424,7 @@ class LayerStackTreeViewModel(QAbstractItemModel):
         action = menu.addAction('Change Colormap...')
         return {action: _show_change_colormap_dialog}
 
-    def composite_layer_menu(self, menu, lbox: QTreeView, selected_uuids: list, *args):
+    def composite_layer_menu(self, menu, lbox: QListView, selected_uuids: list, *args):
         """
         provide common options for RGB or other composite layers, eventually with option to go to a compositing dialog
 

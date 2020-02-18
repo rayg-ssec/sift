@@ -7,7 +7,7 @@ import logging
 from PyQt5.QtCore import QObject
 
 from uwsift.common import Info, Kind
-from uwsift.control.layer_tree import LayerStackTreeViewModel
+from uwsift.control.layer_tree import LayerStackListModel
 # type hints:
 from uwsift.model.document import Document
 from uwsift.view.rgb_config import RGBLayerConfigPane
@@ -35,7 +35,7 @@ class UserModifiesRGBLayers(QObject):
     """
 
     def __init__(self, document: Document, rgb_pane: RGBLayerConfigPane,
-                 layer_list_model: LayerStackTreeViewModel, parent=None):
+                 layer_list_model: LayerStackListModel, parent=None):
         super().__init__(parent)
         self.doc = document
         self.rgb_pane = rgb_pane
