@@ -232,8 +232,9 @@ class LayerStackListModel(QAbstractListModel):
 
         - http://duganchen.ca/a-pythonic-qt-list-model-implementation/
         - http://doc.qt.io/qt-5/qabstractitemmodel.html#beginMoveRows
-        - http://pyqt.sourceforge.net/Docs/PyQt4/qabstractitemmodel.html
         - http://doc.qt.io/qt-5/qtwidgets-itemviews-simpletreemodel-example.html
+        - https://doc.qt.io/qt-5/qabstractlistmodel.html#details
+        - https://doc.qt.io/qt-5/model-view-programming.html#model-subclassing-reference
 
     """
     widgets = None
